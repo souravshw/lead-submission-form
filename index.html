@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lead Submission Form</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  label { display: flex; flex-direction: column; font-size: 0.9em; }
+  input, button { padding: 8px; font-size: 1em; }
+  button { grid-column: 1 / -1; background: #007bff; color: white; border: none; cursor: pointer; }
+  button:hover { background: #0056b3; }
+  #response { margin-top: 20px; white-space: pre-wrap; font-family: monospace; grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+
+<h1>Dynamic Lead Submission</h1>
+<form id="leadForm">
+  <label>Address: <input type="text" name="address" value="123 Fake Street" required></label>
+  <label>Caller ID: <input type="text" name="caller_id" value="+17194451111" required></label>
+  <label>City: <input type="text" name="city" value="Boulder" required></label>
+  <label>DOB: <input type="text" name="dob" value="Example" required></label>
+  <label>Driver1 Credit Rating: <input type="text" name="driver1_credit_rating" value="poor" required></label>
+  <label>Driver1 SR22 Required: <input type="text" name="driver1_sr22_required" value="false" required></label>
+  <label>Drivers: <input type="text" name="drivers" value="Example" required></label>
+  <label>Email: <input type="email" name="email" value="first-and-last-name@gmail.com" required></label>
+  <label>First Name: <input type="text" name="first_name" value="John" required></label>
+  <label>Gender: <input type="text" name="gender" value="M" required></label>
+  <label>Incident Type: <input type="text" name="incident_type" value="Example" required></label>
+  <label>Insurance: <input type="text" name="insurance" value="Example" required></label>
+  <label>IP Address: <input type="text" name="ip_address" value="Example" required></label>
+  <label>Jornaya LeadID: <input type="text" name="jornaya_leadid" value="Example" required></label>
+  <label>Last Name: <input type="text" name="last_name" value="Smith" required></label>
+  <label>Lead Token: <input type="text" name="lead_token" value="c51dacbf90cd4f1db448b0fe861b6cf4" required></label>
+  <label>Marital Status: <input type="text" name="marital_status" value="widowed" required></label>
+  <label>Policy Start Date: <input type="text" name="policy_start_date" value="Example" required></label>
+  <label>Residence Status: <input type="text" name="residence_status" value="own" required></label>
+  <label>SR22: <input type="text" name="sr22" value="true" required></label>
+  <label>State: <input type="text" name="state" value="NM" required></label>
+  <label>Traffic Source ID: <input type="text" name="traffic_source_id" value="1009" required></label>
+  <label>Vehicle1 Make: <input type="text" name="vehicle1_make" value="Example" required></label>
+  <label>Vehicle1 Model: <input type="text" name="vehicle1_model" value="Example" required></label>
+  <label>Vehicle1 Year: <input type="text" name="vehicle1_year" value="31" required></label>
+  <label>ZIP: <input type="text" name="zip" value="Example" required></label>
+  <button type="submit">Send Lead</button>
+  <div id="response"></div>
+</form>
+
+<script>
+document.getElementById('leadForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const baseUrl = "https://evolvetech-innovations.trackdrive.com/api/v1/leads";
+  const formData = new FormData(this);
+  
+  // Build query string
+  const params = new URLSearchParams();
+  for (const [key, value] of formData.entries()) {
+    params.append(key, value);
+  }
+
+  const fullUrl = `${baseUrl}?${params.toString()}`;
+
+  try {
+    const res = await fetch(fullUrl, { method: 'POST' });
+    const text = await res.text();
+    document.getElementById('response').textContent = `Server Response:\n${text}`;
+  } catch (err) {
+    document.getElementById('response').textContent = `Error: ${err.message}`;
+  }
+});
+</script>
+
+</body>
+</html>
